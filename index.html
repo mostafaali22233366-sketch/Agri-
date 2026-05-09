@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AGRI 59 | Graduation 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
+scroll-behavior:smooth;
+}
+
+:root{
+--gold:#c9a97c;
+}
+
+body{
+
+background:#000;
+color:white;
+overflow-x:hidden;
+cursor:none;
+
+}
+
+/* منع الحركة عند فتح الصورة */
+
+body.popup-open{
+
+overflow:hidden;
+height:100vh;
+
+}
+
+/* NOISE */
+
+.noise{
+
+position:fixed;
+inset:0;
+
+background-image:
+radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+
+background-size:3px 3px;
+
+opacity:.03;
+
+pointer-events:none;
+
+z-index:999999;
+
+}
+
+/* CURSOR */
+
+.cursor{
+
+width:22px;
+height:22px;
+
+border:1px solid var(--gold);
+
+border-radius:50%;
+
+position:fixed;
+
+pointer-events:none;
+
+transform:translate(-50%,-50%);
+
+z-index:999999999;
+
+transition:.2s;
+
+mix-blend-mode:difference;
+
+}
+
+.cursor.active{
+
+width:65px;
+height:65px;
+
+background:rgba(201,169,124,.15);
+
+}
+
+/* LIGHT */
+
+.light{
+
+position:fixed;
+
+width:500px;
+height:500px;
+
+border-radius:50%;
+
+background:
+radial-gradient(circle,
+rgba(201,169,124,.10),
+transparent 70%);
+
+pointer-events:none;
+
+transform:translate(-50%,-50%);
+
+z-index:1;
+
+}
+
+/* INTRO */
+
+.intro{
+
+position:fixed;
+top:0;
+left:0;
+
+width:100%;
+height:100vh;
+
+background:
+radial-gradient(circle at top,#1f1f1f 0%,#000 75%);
+
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+z-index:999999;
+
+overflow:hidden;
+
+transition:1.5s;
+
+}
+
+.intro.hide{
+
+opacity:0;
+pointer-events:none;
+
+}
+
+.intro::before{
+
+content:"";
+
+position:absolute;
+
+width:900px;
+height:900px;
+
+background:
+radial-gradient(circle,
+rgba(201,169,124,.18),
+transparent 70%);
+
+animation:rotateGlow 14s linear infinite;
+
+}
+
+.intro h1{
+
+font-size:110px;
+letter-spacing:18px;
+
+font-weight:800;
+
+margin-bottom:15px;
+
+z-index:10;
+
+text-shadow:
+0 0 40px rgba(201,169,124,.2);
+
+animation:
+fadeUp 1s ease,
+floatText 4s ease-in-out infinite;
+
+}
+
+.intro p{
+
+color:#aaa;
+
+letter-spacing:5px;
+
+z-index:10;
+
+margin-bottom:50px;
+
+font-size:14px;
+
+}
+
+.loader-number{
+
+font-size:90px;
+
+font-weight:800;
+
+color:var(--gold);
+
+z-index:10;
+
+animation:pulse 1s infinite;
+
+}
+
+/* MAIN */
+
+.main{
+
+display:none;
+
+padding:120px 7%;
+
+animation:cinematicEnter 1.5s ease;
+
+position:relative;
+
+z-index:5;
+
+}
+
+/* TITLE */
+
+.main-title{
+
+text-align:center;
+
+margin-bottom:100px;
+
+}
+
+.main-title h2{
+
+font-size:60px;
+
+letter-spacing:4px;
+
+margin-bottom:35px;
+
+line-height:1.5;
+
+}
+
+#typing-text{
+
+font-size:18px;
+
+line-height:2.5;
+
+max-width:1000px;
+
+margin:auto;
+
+color:#bdbdbd;
+
+min-height:220px;
+
+letter-spacing:1px;
+
+}
+
+/* STATS */
+
+.stats{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:30px;
+
+margin-bottom:120px;
+
+}
+
+.stat{
+
+background:
+rgba(255,255,255,.03);
+
+border:1px solid rgba(255,255,255,.06);
+
+backdrop-filter:blur(20px);
+
+padding:45px;
+
+border-radius:30px;
+
+text-align:center;
+
+transition:.5s;
+
+}
+
+.stat:hover{
+
+transform:translateY(-10px);
+
+box-shadow:
+0 0 40px rgba(201,169,124,.15);
+
+}
+
+.stat h3{
+
+font-size:55px;
+
+color:var(--gold);
+
+margin-bottom:10px;
+
+}
+
+.stat p{
+
+color:#aaa;
+
+letter-spacing:3px;
+
+}
+
+/* GALLERY */
+
+.gallery{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(340px,1fr));
+
+gap:40px;
+
+}
+
+/* CARD */
+
+.card{
+
+background:
+rgba(17,17,17,.72);
+
+backdrop-filter:blur(18px);
+
+border-radius:30px;
+
+overflow:hidden;
+
+border:1px solid rgba(255,255,255,.08);
+
+transition:1s;
+
+position:relative;
+
+opacity:0;
+transform:translateY(80px);
+
+}
+
+.card.show{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+.card:hover{
+
+transform:translateY(-10px);
+
+box-shadow:
+0 0 70px rgba(201,169,124,.15);
+
+}
+
+.card img{
+
+width:100%;
+height:520px;
+
+object-fit:cover;
+
+display:block;
+
+cursor:pointer;
+
+transition:1s;
+
+}
+
+.card:hover img{
+
+transform:scale(1.05);
+
+filter:
+brightness(.8)
+contrast(1.1);
+
+}
+
+.content{
+
+padding:35px;
+
+}
+
+.content h3{
+
+font-size:24px;
+
+margin-bottom:15px;
+
+letter-spacing:2px;
+
+}
+
+.content p{
+
+line-height:2.2;
+
+color:#b8b8b8;
+
+font-size:15px;
+
+}
+
+/* QUOTE */
+
+.quote{
+
+margin-top:140px;
+
+padding:90px 40px;
+
+border-radius:40px;
+
+text-align:center;
+
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.03),
+rgba(255,255,255,.01)
+);
+
+border:1px solid rgba(255,255,255,.06);
+
+}
+
+.quote h2{
+
+font-size:38px;
+
+line-height:2;
+
+margin-bottom:25px;
+
+}
+
+.quote p{
+
+color:#999;
+
+letter-spacing:2px;
+
+}
+
+/* FOOTER */
+
+footer{
+
+margin-top:140px;
+
+padding:60px;
+
+text-align:center;
+
+border-top:1px solid rgba(255,255,255,.05);
+
+}
+
+footer h2{
+
+font-size:40px;
+
+letter-spacing:5px;
+
+margin-bottom:15px;
+
+}
+
+footer p{
+
+color:#777;
+
+}
+
+/* POPUP */
+
+#popup{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100vh;
+
+background:#000;
+
+display:none;
+
+justify-content:center;
+align-items:center;
+
+z-index:9999999;
+
+}
+
+#popup img{
+
+width:100%;
+height:100%;
+
+object-fit:contain;
+
+background:#000;
+
+}
+
+/* زر الخروج */
+
+.popup-close{
+
+position:absolute;
+
+top:30px;
+right:30px;
+
+padding:14px 35px;
+
+border:none;
+
+background:var(--gold);
+
+color:black;
+
+font-weight:700;
+
+border-radius:50px;
+
+cursor:pointer;
+
+z-index:99999999;
+
+font-size:13px;
+
+letter-spacing:2px;
+
+transition:.4s;
+
+}
+
+.popup-close:hover{
+
+transform:scale(1.08);
+
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+transform:translateY(40px);
+
+}
+
+to{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
+@keyframes cinematicEnter{
+
+from{
+
+opacity:0;
+transform:scale(1.05);
+
+}
+
+to{
+
+opacity:1;
+transform:scale(1);
+
+}
+
+}
+
+@keyframes rotateGlow{
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+@keyframes floatText{
+
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
+
+}
+
+@keyframes pulse{
+
+0%{opacity:.5;}
+50%{opacity:1;}
+100%{opacity:.5;}
+
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.intro h1{
+
+font-size:55px;
+
+}
+
+.main-title h2{
+
+font-size:34px;
+
+}
+
+.card img{
+
+height:420px;
+
+}
+
+.quote h2{
+
+font-size:28px;
+
+}
+
+}
+
+@media(max-width:600px){
+
+body{
+
+cursor:auto;
+
+}
+
+.cursor,
+.light{
+
+display:none;
+
+}
+
+.intro h1{
+
+font-size:40px;
+
+letter-spacing:6px;
+
+}
+
+.main{
+
+padding:90px 5%;
+
+}
+
+.card img{
+
+height:320px;
+
+}
+
+.main-title h2{
+
+font-size:28px;
+
+}
+
+#typing-text{
+
+font-size:16px;
+
+line-height:2.2;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="noise"></div>
+
+<div class="cursor" id="cursor"></div>
+
+<div class="light" id="light"></div>
+
+<!-- صوت -->
+
+<audio id="introSound">
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INTRO -->
+
+<div class="intro" id="intro">
+
+<h1>AGRI 59</h1>
+
+<p>
+
+تجربة تخرج فاخرة • دفعة 2026
+
+</p>
+
+<div class="loader-number" id="loaderNumber">
+
+1
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main" id="main">
+
+<!-- TITLE -->
+
+<div class="main-title">
+
+<h2>
+
+تهانينا للخريجين
+
+</h2>
+
+<p id="typing-text"></p>
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats">
+
+<div class="stat">
+
+<h3>59</h3>
+
+<p>خريج</p>
+
+</div>
+
+<div class="stat">
+
+<h3>2026</h3>
+
+<p>دفعة التخرج</p>
+
+</div>
+
+<div class="stat">
+
+<h3>∞</h3>
+
+<p>ذكريات لا تنتهي</p>
+
+</div>
+
+</div>
+
+<!-- GALLERY -->
+
+<div class="gallery">
+
+<div class="card">
+
+<img src="1.png" loading="lazy" onclick="openImage(this.src)">
+
+<div class="content">
+
+<h3>
+
+EDITORIAL MOCKUP
+
+</h3>
+
+<p>
+
+هوية بصرية فاخرة مستوحاة من أنظمة الموضة العالمية.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="2.png" loading="lazy" onclick="openImage(this.src)">
+
+<div class="content">
+
+<h3>
+
+TECHNICAL SYSTEM
+
+</h3>
+
+<p>
+
+تصميم هندسي أنيق يجمع بين الحداثة والطابع العلمي.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="3.png" loading="lazy" onclick="openImage(this.src)">
+
+<div class="content">
+
+<h3>
+
+CLASS IDENTITY
+
+</h3>
+
+<p>
+
+تجربة هوية متكاملة صُممت خصيصًا لدفعة AGRI 59.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="4.png" loading="lazy" onclick="openImage(this.src)">
+
+<div class="content">
+
+<h3>
+
+LUXURY STREETWEAR
+
+</h3>
+
+<p>
+
+أسلوب فاخر مستوحى من ثقافة الأزياء اليابانية الحديثة.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- QUOTE -->
+
+<div class="quote">
+
+<h2>
+
+" النجاح ليس النهاية،<br>
+بل بداية لشيء أعظم "
+
+</h2>
+
+<p>
+
+AGRI 59 • دفعة 2026
+
+</p>
+
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+
+<h2>
+
+AGRI 59
+
+</h2>
+
+<p>
+
+DESIGNED BY MOSTAFA AL-HILALI
+
+</p>
+
+</footer>
+
+</div>
+
+<!-- POPUP -->
+
+<div id="popup">
+
+<button class="popup-close" onclick="closeImage()">
+
+إغلاق
+
+</button>
+
+<img id="popup-img">
+
+</div>
+
+<script>
+
+/* ========================================= */
+/* LOADER 1 2 3 */
+/* ========================================= */
+
+const loader = document.getElementById("loaderNumber");
+
+let count = 1;
+
+const interval = setInterval(()=>{
+
+count++;
+
+loader.innerText = count;
+
+if(count === 3){
+
+clearInterval(interval);
+
+setTimeout(()=>{
+
+document.getElementById("intro")
+.classList.add("hide");
+
+document.getElementById("main")
+.style.display = "block";
+
+showCards();
+
+typeWriter();
+
+document.getElementById("introSound").play();
+
+},800);
+
+}
+
+},1000);
+
+/* ========================================= */
+/* TYPE WRITER */
+/* ========================================= */
+
+const message = `
+
+اليوم ليس مجرد نهاية لسنوات الدراسة،
+بل بداية لطريق جديد مليء بالإنجازات والطموحات.
+
+سنوات من التعب والذكريات والنجاحات
+صنعت قصة كاملة باسم AGRI 59.
+
+نتمنى لكل خريج مستقبلًا مليئًا بالفخر،
+والنجاح،
+واللحظات التي لا تُنسى.
+
+`;
+
+const typingText = document.getElementById("typing-text");
+
+let i = 0;
+
+function typeWriter(){
+
+if(i < message.length){
+
+typingText.innerHTML += message.charAt(i);
+
+i++;
+
+setTimeout(typeWriter,35);
+
+}
+
+}
+
+/* ========================================= */
+/* POPUP */
+/* ========================================= */
+
+function openImage(src){
+
+document.getElementById("popup")
+.style.display = "flex";
+
+document.getElementById("popup-img")
+.src = src;
+
+document.body.classList.add("popup-open");
+
+}
+
+function closeImage(){
+
+document.getElementById("popup")
+.style.display = "none";
+
+document.body.classList.remove("popup-open");
+
+}
+
+/* ========================================= */
+/* CARD REVEAL */
+/* ========================================= */
+
+const cards = document.querySelectorAll('.card');
+
+function showCards(){
+
+cards.forEach(card=>{
+
+const top = card.getBoundingClientRect().top;
+
+if(top < window.innerHeight - 100){
+
+card.classList.add('show');
+
+}
+
+});
+
+}
+
+window.addEventListener('scroll',showCards);
+
+/* ========================================= */
+/* CURSOR */
+/* ========================================= */
+
+const cursor = document.getElementById('cursor');
+
+document.addEventListener('mousemove',(e)=>{
+
+cursor.style.left = e.clientX + 'px';
+cursor.style.top = e.clientY + 'px';
+
+});
+
+/* ========================================= */
+/* LIGHT */
+/* ========================================= */
+
+const light = document.getElementById('light');
+
+document.addEventListener('mousemove',(e)=>{
+
+light.style.left = e.clientX + 'px';
+light.style.top = e.clientY + 'px';
+
+});
+
+/* ========================================= */
+/* HOVER */
+/* ========================================= */
+
+const hoverItems = document.querySelectorAll(
+'button, .card img'
+);
+
+hoverItems.forEach(item=>{
+
+item.addEventListener('mouseenter',()=>{
+
+cursor.classList.add('active');
+
+});
+
+item.addEventListener('mouseleave',()=>{
+
+cursor.classList.remove('active');
+
+});
+
+});
+
+/* ========================================= */
+/* ESC CLOSE */
+/* ========================================= */
+
+document.addEventListener('keydown',(e)=>{
+
+if(e.key === "Escape"){
+
+closeImage();
+
+}
+
+});
+
+</script>
+
+</body>
+
+</html>
